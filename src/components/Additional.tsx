@@ -1,13 +1,15 @@
-import * as React from 'react'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { Link } from '@mui/material'
-import dockerCompose from '../assets/docker-compose.ts'
 import venv from '../assets/venv.ts'
 import { pip, pypi } from '../assets/pip.ts'
 import hass from '../assets/hass.ts'
+import { useState } from 'react'
+import docker from '../assets/docker-compose.yml'
+import CodeBlock from './CodeBlock.tsx'
+import yaml from 'js-yaml'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -37,7 +39,7 @@ function a11yProps(index: number) {
 }
 
 export default function Additionals() {
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = useState(0)
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -50,40 +52,27 @@ export default function Additionals() {
         <Tabs value={value} onChange={handleChange} aria-label='basic tabs example'>
           <Tab label='pip' {...a11yProps(0)} />
           <Tab label='HomeAssistant' {...a11yProps(1)} />
-          <Tab label='Docker' {...a11yProps(2)} />
+          <Tab label='Docker (outdated)' {...a11yProps(2)} />
           <Tab label='Raspberry PI' {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Latest stable release via <Link href='https://pypi.org/project/ledfx/'>PyPi</Link>:
-        <br />
-        <code>
-          <pre>{pypi}</pre>
-        </code>
+        <Link href='https://pypi.org/project/ledfx/'>PyPi</Link> (Latest stable release)
+        <CodeBlock code={pypi} />
         From source
-        <code>
-          <pre>{pip}</pre>
-        </code>
+        <CodeBlock code={pip} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <Link href='https://github.com/YeonV/home-assistant-addons/'>HomeAssistant Add-on</Link>: add this repo to Home Assistant:
-        <code>
-          <pre>{hass}</pre>
-        </code>
-        {/* <code style={{ background: '#000', color: '#fff', padding: '0.5rem 1rem', borderRadius: '5px' }}>https://github.com/YeonV/home-assistant-addons</code> */}
+        <CodeBlock code={hass} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         Docker-compose:
-        <code>
-          <pre>{dockerCompose}</pre>
-        </code>
+        <CodeBlock code={yaml.dump(docker)} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
         VENV on Raspberry PI OS:
-        <br />
-        <code>
-          <pre>{venv}</pre>
-        </code>
+        <CodeBlock code={venv} />
       </CustomTabPanel>
     </Box>
   )

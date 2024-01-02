@@ -60,4 +60,4 @@ jobs:
           PORT: 22
           METHOD: sftp
           LOCAL_DIR: ./dist/
-          REMOTE_DIR: ./get.ledfx.app/
+          REMOTE_DIR: ./download.ledfx.app/

@@ -1,4 +1,3 @@
-import './App.css'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -6,10 +5,11 @@ import { useEffect, useMemo, useState } from 'react'
 import TopBar from './components/TopBar'
 import Tabs from './components/Tabs'
 import Alert from './components/Alert'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Additionals from './components/Additional'
 import Footer from './components/Footer'
 import Links from './components/Links'
+import { getMobileOperatingSystem } from './components/utils'
 
 export type ReleaseType = {
   name: string
@@ -26,6 +26,9 @@ function App() {
   const [releases, setReleases] = useState<ReleaseType[]>([])
   const [version, setVersion] = useState<string>(releases[0]?.tag_name || '')
   const [mirror, setMirror] = useState<'Official' | 'Unofficial'>('Unofficial')
+
+  const isAndroid = getMobileOperatingSystem() === 'Android'
+  const isIOS = getMobileOperatingSystem() === 'iOS'
 
   const theme = useMemo(
     () =>
@@ -59,16 +62,24 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <TopBar mode={mode} setMode={setMode} releases={releases} version={version} setVersion={setVersion} mirror={mirror} setMirror={setMirror} />
 
-      <Box sx={{ width: '100%', maxWidth: 1240, margin: '2rem auto', padding: '0 20px' }}>
-        <Tabs releases={releases} mirror={mirror} version={version} />
-        <Alert />
-        <Additionals />
+      <Box sx={{ width: '100%', maxWidth: 1240, margin: '2rem auto', padding: '50px 20px 50px' }}>
+        <TopBar mode={mode} setMode={setMode} releases={releases} version={version} setVersion={setVersion} mirror={mirror} setMirror={setMirror} />
+        {!isAndroid && !isIOS && (
+          <>
+            <Tabs releases={releases} mirror={mirror} version={version} />
+            <Alert />
+            <Additionals />
+          </>
+        )}
+        {(isAndroid || isIOS) && (
+          <Typography marginBottom={5} variant='h6'>
+            You need Windows, macOS or Linux to run LedFx.
+          </Typography>
+        )}
         <Links />
+        <Footer />
       </Box>
-
-      <Footer />
     </ThemeProvider>
   )
 }

@@ -18,10 +18,14 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.15.2",
     "@mui/material": "^5.15.2",
+    "js-yaml": "^4.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-use-clipboard": "^1.0.9"
   },
   "devDependencies": {
+    "@modyfi/vite-plugin-yaml": "^1.0.4",
+    "@types/js-yaml": "^4.0.9",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",

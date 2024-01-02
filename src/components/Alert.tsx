@@ -2,7 +2,7 @@ import { Alert as MuiAlert, AlertTitle } from '@mui/material'
 
 const Alert = () => {
   return (
-    <MuiAlert severity='warning' color='info' sx={{ marginTop: 6 }}>
+    <MuiAlert severity='warning' color='info' variant='outlined' sx={{ marginTop: 6 }}>
       <AlertTitle>Our binaries are not signed!</AlertTitle>
       Since we don't have a code signing certificate, you might get warnings.
       <br />
