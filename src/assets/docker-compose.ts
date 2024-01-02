@@ -1,0 +1,20 @@
+const dockerCompose = `version: '3'
+
+services:
+ledfx:
+image: spirocekano/ledfx:frontend_beta
+container_name: LedFX
+network_mode: host
+volumes:
+- type: bind
+source: $\{PWD}/config
+target: /home/ledfx/.ledfx
+- type: bind
+source: /run/user/1000/pulse
+target: /run/user/1000/pulse
+environment:
+- PULSE_SERVER=unix:/run/user/1000/pulse/native
+#      - PULSE_SERVER=tcp:127.0.0.1
+- PULSE_COOKIE=/tmp/pulseaudio.cookie`
+
+export default dockerCompose
