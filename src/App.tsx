@@ -47,7 +47,7 @@ function App() {
           ? await fetch('https://api.github.com/repos/YeonV/LedFx-Builds/releases')
           : await fetch('https://api.github.com/repos/LedFx/LedFx/releases')
       const releases_with_pre = await res.json()
-      // console.log(releases_with_pre)
+      console.log(releases_with_pre)
       const releases: ReleaseType[] = releases_with_pre.filter((r: ReleaseType) => r.prerelease === false)
       setReleases(releases)
     }

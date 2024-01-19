@@ -59,6 +59,8 @@ export default function Additionals() {
       <CustomTabPanel value={value} index={0}>
         <Link href='https://pypi.org/project/ledfx/'>PyPi</Link> (Latest stable release)
         <CodeBlock code={pypi} />
+        To enable hue-support:
+        <CodeBlock code={'pip install ledfx[hue]'} />
         From source
         <CodeBlock code={pip} />
       </CustomTabPanel>
