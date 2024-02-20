@@ -1,17 +1,17 @@
-import { AppBar, Box, Button, MenuItem, Select, Stack, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, Stack, Toolbar, Typography } from '@mui/material'
 import { Brightness7, DarkMode } from '@mui/icons-material'
 import { ReleaseType } from '../App'
 import { getMobileOperatingSystem } from './utils'
 
 function TopBar({
   mode,
-  setMode,
-  releases,
-  mirror,
-  version,
-  setMirror,
-  setVersion
-}: {
+  setMode
+}: // releases,
+// mirror,
+// version,
+// setMirror,
+// setVersion
+{
   mode: 'light' | 'dark'
   setMode: (mode: 'light' | 'dark') => void
   releases: ReleaseType[]
@@ -36,7 +36,8 @@ function TopBar({
                 <Button variant='outlined' color={'inherit'} onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
                   {mode === 'dark' ? <DarkMode /> : <Brightness7 />}
                 </Button>
-                <Select
+                {/* <Select
+                  disabled
                   value={mirror}
                   onChange={(e) => setMirror(e.target.value as 'Official' | 'Unofficial')}
                   sx={{
@@ -50,8 +51,8 @@ function TopBar({
                 >
                   <MenuItem value='Unofficial'>Unofficial</MenuItem>
                   <MenuItem value='Official'>Official</MenuItem>
-                </Select>
-                <Select
+                </Select> */}
+                {/* <Select
                   value={version}
                   onChange={(e) => setVersion(e.target.value)}
                   sx={{
@@ -68,7 +69,7 @@ function TopBar({
                       {r.tag_name}
                     </MenuItem>
                   ))}
-                </Select>
+                </Select> */}
               </Stack>
             </>
           )}

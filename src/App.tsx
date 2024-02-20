@@ -24,8 +24,9 @@ export type ReleaseType = {
 function App() {
   const [mode, setMode] = useState<'light' | 'dark'>(useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light')
   const [releases, setReleases] = useState<ReleaseType[]>([])
-  const [version, setVersion] = useState<string>(releases[0]?.tag_name || '')
+  const [releasesO, setReleasesO] = useState<ReleaseType[]>([])
   const [mirror, setMirror] = useState<'Official' | 'Unofficial'>('Unofficial')
+  const [version, setVersion] = useState<string>((mirror === 'Unofficial' ? releases : releasesO)[0]?.tag_name || '')
 
   const isAndroid = getMobileOperatingSystem() === 'Android'
   const isIOS = getMobileOperatingSystem() === 'iOS'
@@ -42,32 +43,44 @@ function App() {
 
   useEffect(() => {
     const get = async () => {
-      const res =
-        mirror === 'Unofficial'
-          ? await fetch('https://api.github.com/repos/YeonV/LedFx-Builds/releases')
-          : await fetch('https://api.github.com/repos/LedFx/LedFx/releases')
+      const res = await fetch('https://api.github.com/repos/YeonV/LedFx-Builds/releases')
+
       const releases_with_pre = await res.json()
-      console.log(releases_with_pre)
+      // console.log(releases_with_pre)
       const releases: ReleaseType[] = releases_with_pre.filter((r: ReleaseType) => r.prerelease === false)
       setReleases(releases)
+      const resO = await fetch('https://api.github.com/repos/LedFx/LedFx/releases')
+      const releases_with_preO = await resO.json()
+      // console.log(releases_with_pre)
+      const releasesO: ReleaseType[] = releases_with_preO.filter((r: ReleaseType) => r.prerelease === false)
+      setReleasesO(releasesO)
     }
     get()
   }, [mirror, version])
 
   useEffect(() => {
-    version === '' && setVersion(releases[0]?.tag_name || '')
+    setVersion((mirror === 'Unofficial' ? releases : releasesO)[0]?.tag_name || '')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [releases])
+  }, [releases, releasesO])
 
+  // console.log(releases, version, mirror)
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
       <Box sx={{ width: '100%', maxWidth: 1240, margin: '2rem auto', padding: '50px 20px 50px' }}>
-        <TopBar mode={mode} setMode={setMode} releases={releases} version={version} setVersion={setVersion} mirror={mirror} setMirror={setMirror} />
+        <TopBar
+          mode={mode}
+          setMode={setMode}
+          releases={mirror === 'Unofficial' ? releases : releasesO}
+          version={version}
+          setVersion={setVersion}
+          mirror={mirror}
+          setMirror={setMirror}
+        />
         {!isAndroid && !isIOS && (
           <>
-            <Tabs releases={releases} mirror={mirror} version={version} />
+            <Tabs releasesO={releasesO} releases={releases} mirror={mirror} version={version} setMirror={setMirror} />
             <Alert />
             <Additionals />
           </>

@@ -14,31 +14,52 @@ function a11yProps(index: number) {
   }
 }
 
-export default function Tabs({ releases, mirror, version }: { releases: ReleaseType[]; mirror: 'Official' | 'Unofficial'; version: string }) {
+export default function Tabs({
+  releases,
+  releasesO,
+  mirror,
+  version
+}: // setMirror
+{
+  releases: ReleaseType[]
+  releasesO: ReleaseType[]
+  mirror: 'Official' | 'Unofficial'
+  version: string
+  // setMirror: React.Dispatch<React.SetStateAction<'Official' | 'Unofficial'>>
+}) {
   const [value, setValue] = React.useState(0)
   const theme = useTheme()
-  console.log(mirror)
+  // console.log(mirror)
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
+    // newValue === 0 ? setMirror('Official') : setMirror('Unofficial')
   }
   const assets = releases.find((r) => r.tag_name === version)?.assets
+  const assetsO = releasesO.find((r) => r.tag_name === version)?.assets
 
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between' }}>
         <MuiTabs value={value} onChange={handleChange} aria-label='basic tabs example'>
-          <Tab wrapped label='LedFx (core)' {...a11yProps(0)} />
-          <Tab wrapped label='Client (beta)' {...a11yProps(1)} />
-          <Tab wrapped label='CC (beta)' {...a11yProps(2)} />
+          <Tab wrapped label='LedFx Core (stable)' {...a11yProps(0)} />
+          <Tab wrapped label='LedFx Core (beta)' {...a11yProps(1)} />
+          <Tab wrapped label='LedFx Client (beta)' {...a11yProps(2)} />
+          <Tab wrapped label='LedFx CC (beta)' {...a11yProps(3)} />
         </MuiTabs>
         <Autocomplete
           id='grouped-demo'
           clearOnBlur
           color={theme.palette.text.disabled}
           popupIcon={<Search />}
-          options={releases.map((r) => r.assets.map((a) => ({ name: r.tag_name, assets: a }))).flat(1)}
+          options={(mirror === 'Unofficial' ? releases : releasesO).map((r) => r.assets.map((a) => ({ name: r.tag_name, assets: a }))).flat(1)}
           groupBy={(option) => option.name}
-          getOptionLabel={(option) => option.assets.name.split('--')[1]}
+          getOptionLabel={(option) =>
+            option.assets.name
+              .replace('LedFx-', '')
+              .replace('LedFx_', '')
+              .replace(/(\d+\.\d+\.\d+)-/, '')
+              .replace('v', '')
+          }
           onChange={(_event, newValue) => {
             if (newValue) {
               window.open(newValue.assets.browser_download_url)
@@ -55,7 +76,13 @@ export default function Tabs({ releases, mirror, version }: { releases: ReleaseT
           renderInput={(params) => <TextField {...params} label='Search all downloads' variant='standard' sx={{ color: theme.palette.text.disabled }} />}
         />
       </Box>
-      {assets && <OS assets={assets} variant={value === 0 ? 'core' : value === 1 ? 'client' : 'CC'} />}
+      {assets && assetsO && (
+        <OS
+          assets={value === 0 ? assetsO : assets}
+          variant={value === 1 ? 'core' : value === 2 ? 'client' : value === 3 ? 'CC' : undefined}
+          official={value === 0}
+        />
+      )}
     </Box>
   )
 }
