@@ -80,7 +80,7 @@ function App() {
         />
         {!isAndroid && !isIOS && (
           <>
-            <Tabs releasesO={releasesO} releases={releases} mirror={mirror} version={version} setMirror={setMirror} />
+            <Tabs releasesO={releasesO} releases={releases} mirror={mirror} version={version} />
             <Alert />
             <Additionals />
           </>
