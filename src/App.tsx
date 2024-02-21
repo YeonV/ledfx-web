@@ -85,7 +85,10 @@ function App() {
         )}
         {(isAndroid || isIOS) && (
           <Typography marginBottom={5} variant='h6'>
-            You need Windows, macOS or Linux to run LedFx.
+            You need Windows, macOS or Linux to <b>run</b> LedFx, <br />
+            however you can still control it from your phone by browsing <br />
+            <br />
+            <code style={{ padding: '15px 30px', margin: 0, background: '#000' }}>http://[ip-of-pc-running-ledfx]:8888</code>
           </Typography>
         )}
         <Links />
