@@ -5,18 +5,12 @@ import { getMobileOperatingSystem } from './utils'
 
 function TopBar({
   mode,
-  version,
   setMode
-}: // releases,
-// mirror,
-// setMirror,
-// setVersion
-{
+}: {
   mode: 'light' | 'dark'
   setMode: (mode: 'light' | 'dark') => void
   releases: ReleaseType[]
   mirror: 'Official' | 'Unofficial'
-  version: string
   setMirror: (mirror: 'Official' | 'Unofficial') => void
   setVersion: (version: string) => void
 }) {
@@ -26,7 +20,7 @@ function TopBar({
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='fixed'>
         <Toolbar sx={{ justifyContent: 'space-between', width: '100%', maxWidth: 1240, margin: '0 auto' }}>
-          <Typography variant='h6'>Download LedFx {version}</Typography>
+          <Typography variant='h6'>Download LedFx</Typography>
           {!isAndroid && !isIOS && (
             <>
               <Stack direction={'row'} spacing={2} sx={{ color: '#fff' }} alignItems={'center'}>

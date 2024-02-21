@@ -63,7 +63,6 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [releases, releasesO])
 
-  // console.log(releases, version, mirror)
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -73,14 +72,13 @@ function App() {
           mode={mode}
           setMode={setMode}
           releases={mirror === 'Unofficial' ? releases : releasesO}
-          version={version}
           setVersion={setVersion}
           mirror={mirror}
           setMirror={setMirror}
         />
         {!isAndroid && !isIOS && (
           <>
-            <Tabs releasesO={releasesO} releases={releases} mirror={mirror} version={version} />
+            <Tabs releasesO={releasesO} releases={releases} version={version} setVersion={setVersion} setMirror={setMirror} />
             <Alert />
             <Additionals />
           </>

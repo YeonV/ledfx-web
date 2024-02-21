@@ -13,7 +13,6 @@ export default function OS({
   variant?: 'core' | 'client' | 'CC'
   official?: boolean
 }) {
-  // console.log(assets)
   return (
     <Grid sx={{ flexGrow: 1, justifyContent: 'center', marginTop: 2, color: '#bbb' }} direction={'row'} spacing={2} container>
       <Grid item sx={{ width: '30%', minWidth: 300 }}>
