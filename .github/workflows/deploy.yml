@@ -65,4 +65,4 @@ jobs:
         with:
           path: '.'
       - name: Deploy to second GitHub Pages
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v2 # This is the same action as the first one
