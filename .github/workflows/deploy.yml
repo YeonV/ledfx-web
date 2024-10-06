@@ -60,13 +60,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: 'github-pages'
-      - name: debug
-        run: |
-          ls -la
-          ls -la github-pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './github-pages'
+          path: '.'
       - name: Deploy to second GitHub Pages
         uses: actions/deploy-pages@v2
