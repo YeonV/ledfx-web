@@ -15,7 +15,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.check.outputs.changes }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check for changes
+        id: check
+        run: |
+          if git diff --quiet HEAD^ HEAD -- src/ public/; then
+            echo "no changes"
+            echo "::set-output name=changes::false"
+          else
+            echo "changes detected"
+            echo "::set-output name=changes::true"
+          fi
+
   deploy:
+    if: needs.check-changes.outputs.changes == 'true'
+    needs: check-changes
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -63,6 +83,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './dist'
+          path: './github-pages'
       - name: Deploy to second GitHub Pages
         uses: actions/deploy-pages@v2
