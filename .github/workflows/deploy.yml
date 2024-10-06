@@ -48,16 +48,32 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v2
 
-      - name: Build
-        run: yarn build
-      - name: 📂 Sync files to https://get.ledfx.app
-        continue-on-error: true
-        uses: SamKirkland/FTP-Deploy-Action@2.0.0
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          PORT: 22
-          METHOD: sftp
-          LOCAL_DIR: ./dist/
-          REMOTE_DIR: ./download.ledfx.app/
+      # - name: Build
+      #   run: yarn build
+      # - name: 📂 Sync files to https://get.ledfx.app
+      #   continue-on-error: true
+      #   uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      #   env:
+      #     FTP_SERVER: ${{ secrets.FTP_SERVER }}
+      #     FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+      #     FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      #     PORT: 22
+      #     METHOD: sftp
+      #     LOCAL_DIR: ./dist/
+      #     REMOTE_DIR: ./download.ledfx.app/
+
+  deploy-second-repo:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout second repo
+        uses: actions/checkout@v4
+        with:
+          repository: LedFx/LedFx-Download
+          token: ${{ secrets.SECOND_REPO_TOKEN }}
+      - name: Deploy to second GitHub Pages
+        uses: actions/deploy-pages@v2
+        with:
+          path: './dist'
+          target_branch: 'gh-pages'
+          commit_message: 'Deployed to gh-pages'
