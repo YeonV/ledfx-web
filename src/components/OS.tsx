@@ -28,10 +28,11 @@ export default function OS({
             ?.filter((a) => a.name.includes('apk'))
             ?.map((a) => (
               <Button key={a.name} variant='contained' href={a.browser_download_url}>
-                {'APK'}
+                {'Download APK'}
               </Button>
             ))}
-            <Divider sx={{ pt: 3, pb: 2, width: '100%' }} />
+            <Divider sx={{ pt: 3, pb: 0, width: '100%' }} />
+            <span style={{ height: 30 }} />
             <Alert variant='outlined' severity='info' sx={{ width: '100%' }}>
                The Android app is <strong>in Alpha</strong>
             </Alert>
