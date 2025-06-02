@@ -67,7 +67,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <Box sx={{ width: '100%', maxWidth: 1240, margin: '2rem auto', padding: '50px 20px 50px' }}>
+      <Box sx={{ width: '100%', maxWidth: 1240, margin: '2rem auto', padding: isAndroid? '30px 20px 50px' : '50px 20px 50px' }}>
         <TopBar
           mode={mode}
           setMode={setMode}
@@ -76,14 +76,14 @@ function App() {
           mirror={mirror}
           setMirror={setMirror}
         />
-        {!isAndroid && !isIOS && (
+        {!isIOS && (
           <>
             <Tabs releasesO={releasesO} releases={releases} version={version} setVersion={setVersion} setMirror={setMirror} />
             <Alert />
             <Additionals />
           </>
         )}
-        {(isAndroid || isIOS) && (
+        {isIOS && (
           <Typography marginBottom={5} variant='h6'>
             You need Windows, macOS or Linux to <b>run</b> LedFx, <br />
             however you can still control it from your phone by browsing <br />

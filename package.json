@@ -6,7 +6,7 @@
   "description": "LedFx Download",
   "author": "YeonV aka Blade",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "buildgh": "tsc && vite build --base /ledfx-web/",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
