@@ -27,7 +27,7 @@ export default function Tabs({
   setMirror: React.Dispatch<React.SetStateAction<'Official' | 'Unofficial'>>
   setVersion: React.Dispatch<React.SetStateAction<string>>
 }) {
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(3)
   const theme = useTheme()
   const isAndroid = getMobileOperatingSystem() === 'Android'
   
