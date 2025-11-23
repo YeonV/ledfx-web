@@ -7,6 +7,7 @@ import { Autocomplete, TextField, Typography, useTheme } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import { getMobileOperatingSystem } from './utils'
+import { extractFireTVCode } from './releaseUtils'
 
 function a11yProps(index: number) {
   return {
@@ -43,6 +44,8 @@ export default function Tabs({
   const assets = releases.find((r) => r.tag_name === version)?.assets
   const assetsO = releasesO[0]?.assets
 
+  const fireTVCode = extractFireTVCode(releases[0]?.body)
+  
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between'}}>
@@ -97,6 +100,7 @@ export default function Tabs({
           assets={value === 0 ? assetsO : assets}
           variant={value === 1 ? 'core' : value === 2 ? 'client' : value === 3 ? 'CC' : undefined}
           official={value === 0}
+          fireTVCode={fireTVCode}
         />
       )}
     </Box>

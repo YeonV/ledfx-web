@@ -19,6 +19,7 @@ export type ReleaseType = {
   }[]
   tag_name: string
   prerelease: boolean
+  body?: string
 }
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
 
   const isAndroid = getMobileOperatingSystem() === 'Android'
   const isIOS = getMobileOperatingSystem() === 'iOS'
-
+  const isFireTV = new URLSearchParams(window.location.search).get('firetv') !== null
+  
   const theme = useMemo(
     () =>
       createTheme({
@@ -44,14 +46,22 @@ function App() {
   useEffect(() => {
     const get = async () => {
       const res = await fetch('https://api.github.com/repos/YeonV/LedFx-Builds/releases')
-
       const releases_with_pre = await res.json()
-      // console.log(releases_with_pre)
       const releases: ReleaseType[] = releases_with_pre.filter((r: ReleaseType) => r.prerelease === false)
-      setReleases(releases)
+      
+      // Get the latest release using the /latest endpoint
+      const latestRes = await fetch('https://api.github.com/repos/YeonV/LedFx-Builds/releases/latest')
+      const latestRelease: ReleaseType = await latestRes.json()
+      
+      // Move latest to the front of the array
+      const sortedReleases = [
+        latestRelease,
+        ...releases.filter(r => r.tag_name !== latestRelease.tag_name)
+      ]
+      setReleases(sortedReleases)
+      
       const resO = await fetch('https://api.github.com/repos/LedFx/LedFx/releases')
       const releases_with_preO = await resO.json()
-      // console.log(releases_with_pre)
       const releasesO: ReleaseType[] = releases_with_preO.filter((r: ReleaseType) => r.prerelease === false)
       setReleasesO(releasesO)
     }
@@ -63,11 +73,14 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [releases, releasesO])
 
+  console.log(releases)
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <Box sx={{ width: '100%', maxWidth: 1240, margin: '2rem auto', padding: isAndroid? '30px 20px 50px' : '50px 20px 50px' }}>
+      {isFireTV ? (<Box sx={{ width: '100%', height: '100%', overflow: 'hidden', bgcolor: 'red'}}>
+
+      </Box>) : (<Box sx={{ width: '100%', maxWidth: 1240, margin: '2rem auto', padding: isAndroid? '30px 20px 50px' : '50px 20px 50px' }}>
         <TopBar
           mode={mode}
           setMode={setMode}
@@ -93,7 +106,7 @@ function App() {
         )}
         <Links />
         <Footer />
-      </Box>
+      </Box>)}
     </ThemeProvider>
   )
 }

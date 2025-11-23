@@ -10,13 +10,15 @@ export default function OS({
   assets,
   variant = 'core',
   official,
+  fireTVCode
 }: {
   assets: { browser_download_url: string; name: string }[]
   variant?: 'core' | 'client' | 'CC'
   official?: boolean
+  fireTVCode?: string | null
 }) {
-    const isAndroid = getMobileOperatingSystem() === 'Android'
-  
+  const isAndroid = getMobileOperatingSystem() !== 'Android'
+  // console.log(assets.map((a) => a.name))
   return (
     <Grid sx={{ flexGrow: 1, justifyContent: 'center', marginTop: 2, color: '#bbb' }} direction={'row'} spacing={2} container>
       {isAndroid && variant === 'CC' && <Grid item sx={{ width: '30%', minWidth: 300 }}>
@@ -25,15 +27,21 @@ export default function OS({
             <Android />
           </Box>
           {assets
-            ?.filter((a) => a.name.includes('apk'))
+            ?.filter((a) => a.name.includes('apk') && (a.name.includes('-release.apk') || a.name.includes('-x86.apk') || a.name.includes('-x86_64.apk')))
             ?.map((a) => (
-              <Button key={a.name} variant='contained' href={a.browser_download_url}>
-                {'Download APK'}
+              <Button sx={{ textTransform: 'none', width: '180px' }} key={a.name} variant='contained' href={a.browser_download_url}>
+                {a.name.includes('arm64-v8a') ? 'arm64' : 
+                 a.name.includes('armeabi-v7a') ? 'armv7' :
+                 a.name.includes('x86_64') ? 'x86_64' :
+                 a.name.includes('x86') ? 'x86' : 'APK'}
               </Button>
             ))}
             <Divider sx={{ pt: 3, pb: 0, width: '100%' }} />
-            <span style={{ height: 30 }} />
-            <Alert variant='outlined' severity='info' sx={{ width: '100%' }}>
+            
+            {fireTVCode && (<Alert variant='outlined' severity='info' sx={{ width: '180px', marginTop: 2, py: 0 }}>
+               FireTV: <strong>{fireTVCode}</strong>
+            </Alert>)}
+            <Alert variant='outlined' severity='info' sx={{ width: '180px' }}>
                The Android app is <strong>in Alpha</strong>
             </Alert>
             <Divider sx={{ pt: 0, pb: 4, width: '100%' }} />
@@ -45,7 +53,7 @@ export default function OS({
           {assets
             ?.filter((a) => a.name.includes('win') && (a.name.includes(variant) || official))
             ?.map((a) => (
-              <Button key={a.name} variant='contained' href={a.browser_download_url}>
+              <Button sx={{ textTransform: 'none', width: '180px' }} key={a.name} variant='contained' href={a.browser_download_url}>
                 {(a.name.includes('--') ? a.name.split('--')[1] : a.name)
                   .replace('.exe', '')
                   .replace('win', '')
@@ -64,21 +72,27 @@ export default function OS({
           <Apple />
           {assets
             ?.filter((a) => (a.name.includes('osx') || a.name.includes('mac')) && (a.name.includes(variant) || official))
-            ?.map((a) => (
-              <Button key={a.name} variant='contained' href={a.browser_download_url}>
-                {(a.name.includes('--') ? a.name.split('--')[1] : a.name)
-                  .replace('osx', '')
-                  .replace('zip', '')
-                  .replace('mac', '')
-                  .replace('zip', '')
-                  .replace('LedFx', '')
-                  .replace(/(\d+\.\d+\.\d+)-/, '')
-                  .replace('v', '')
-                  .replace('-', '')
-                  .replace('-', '')
-                  .replace('.', '')}
-              </Button>
-            ))}
+            ?.map((a) => {
+              const filename = a.name.includes('--') ? a.name.split('--')[1] : a.name
+              const extension = filename.split('.').pop() || ''
+              const label = filename
+                .replace('osx', '')
+                .replace('zip', '')
+                .replace('mac', '')
+                .replace('dmg', '')
+                .replace('LedFx', '')
+                .replace(/(\d+\.\d+\.\d+)-/, '')
+                .replace('v', '')
+                .replace('-', '')
+                .replace('.', '')
+                .trim()
+              return (
+                <Button sx={{ textTransform: 'none', width: '180px', display: 'flex', justifyContent: 'space-between' }} key={a.name} variant='contained' href={a.browser_download_url}>
+                  <span>{label}</span>
+                  <span>{extension}</span>
+                </Button>
+              )
+            })}
         </Stack>
       </Grid>
       <Grid item sx={{ width: '30%', minWidth: 300 }}>
@@ -86,11 +100,26 @@ export default function OS({
           <Linux />
           {assets
             ?.filter((a) => a.name.includes('linux') && (a.name.includes(variant) || official))
-            ?.map((a) => (
-              <Button key={a.name} variant='contained' href={a.browser_download_url}>
-                {(a.name.includes('--') ? a.name.split('--')[1] : a.name).replace('linux', '').replace('tar.gz', '').replace('-', '').replace('.', '')}
-              </Button>
-            ))}
+            ?.map((a) => {
+              const filename = a.name.includes('--') ? a.name.split('--')[1] : a.name
+              const extension = filename.includes('tar.gz') ? 'tar.gz' : filename.split('.').pop() || ''
+              const label = filename
+                .replace('linux', '')
+                .replace('tar.gz', '')
+                .replace('AppImage', '')
+                .replace('LedFx', '')
+                .replace(/(\d+\.\d+\.\d+)-/, '')
+                .replace('v', '')
+                .replace('-', '')
+                .replace('.', '')
+                .trim()
+              return (
+                <Button sx={{ textTransform: 'none', width: '180px', display: 'flex', justifyContent: 'space-between' }} key={a.name} variant='contained' href={a.browser_download_url}>
+                  <span>{label}</span>
+                  <span>{extension}</span>
+                </Button>
+              )
+            })}
         </Stack>
       </Grid>
       {!isAndroid && variant === 'CC' && <Grid item sx={{ width: '30%', minWidth: 300 }}>
@@ -99,12 +128,18 @@ export default function OS({
             <Android />
           </Box>
           {assets
-            ?.filter((a) => a.name.includes('apk'))
+            ?.filter((a) => a.name.includes('apk') && (a.name.includes('-release.apk') || a.name.includes('-x86.apk') || a.name.includes('-x86_64.apk')))
             ?.map((a) => (
-              <Button key={a.name} variant='contained' href={a.browser_download_url}>
-                {'APK'}
+              <Button sx={{ textTransform: 'none', width: '180px' }} key={a.name} variant='contained' href={a.browser_download_url}>
+                {a.name.includes('arm64-v8a') ? 'arm64' : 
+                 a.name.includes('armeabi-v7a') ? 'armv7' :
+                 a.name.includes('x86_64') ? 'x86_64' :
+                 a.name.includes('x86') ? 'x86' : 'APK'}
               </Button>
             ))}
+            {fireTVCode && (<Alert variant='outlined' severity='info' sx={{ width: '180px', marginTop: 2, py: 0 }}>
+               FireTV: <strong>{fireTVCode}</strong>
+            </Alert>)}
         </Stack>
       </Grid>}
     </Grid>
