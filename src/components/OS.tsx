@@ -5,6 +5,7 @@ import Linux from './Linux'
 import Win from './Win'
 import { getMobileOperatingSystem } from './utils'
 import Android from './Android'
+import FireTVGuide from './FireTVGuide'
 
 export default function OS({
   assets,
@@ -17,7 +18,7 @@ export default function OS({
   official?: boolean
   fireTVCode?: string | null
 }) {
-  const isAndroid = getMobileOperatingSystem() !== 'Android'
+  const isAndroid = getMobileOperatingSystem() === 'Android'
   // console.log(assets.map((a) => a.name))
   return (
     <Grid sx={{ flexGrow: 1, justifyContent: 'center', marginTop: 2, color: '#bbb' }} direction={'row'} spacing={2} container>
@@ -38,9 +39,14 @@ export default function OS({
             ))}
             <Divider sx={{ pt: 3, pb: 0, width: '100%' }} />
             
-            {fireTVCode && (<Alert variant='outlined' severity='info' sx={{ width: '180px', marginTop: 2, py: 0 }}>
-               FireTV: <strong>{fireTVCode}</strong>
-            </Alert>)}
+            {fireTVCode && (<Box sx={{ width: '180px', marginTop: 2, py: 0, pl: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', border: '1px solid', borderColor: 'info.main', borderRadius: 1 }}>
+               <div>FireTV:</div>
+               <div>
+                <strong>{fireTVCode}</strong>
+                <FireTVGuide downloadCode={fireTVCode} />
+               </div>
+               
+            </Box>)}
             <Alert variant='outlined' severity='info' sx={{ width: '180px' }}>
                The Android app is <strong>in Alpha</strong>
             </Alert>
@@ -107,6 +113,7 @@ export default function OS({
                 .replace('linux', '')
                 .replace('tar.gz', '')
                 .replace('AppImage', '')
+                .replace('snap', '')
                 .replace('LedFx', '')
                 .replace(/(\d+\.\d+\.\d+)-/, '')
                 .replace('v', '')
@@ -137,9 +144,14 @@ export default function OS({
                  a.name.includes('x86') ? 'x86' : 'APK'}
               </Button>
             ))}
-            {fireTVCode && (<Alert variant='outlined' severity='info' sx={{ width: '180px', marginTop: 2, py: 0 }}>
-               FireTV: <strong>{fireTVCode}</strong>
-            </Alert>)}
+            {fireTVCode && (<Box sx={{ width: '180px', marginTop: 2, py: 0, pl: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', border: '1px solid', borderColor: 'info.main', borderRadius: 1 }}>
+               <div>FireTV:</div>
+               <div>
+                <strong>{fireTVCode}</strong>
+                <FireTVGuide downloadCode={fireTVCode} />
+               </div>
+               
+            </Box>)}
         </Stack>
       </Grid>}
     </Grid>
