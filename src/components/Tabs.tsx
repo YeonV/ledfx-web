@@ -39,7 +39,7 @@ export default function Tabs({
   }
   useEffect(() => {
     isAndroid && setValue(3)
-  }, [])
+  }, [isAndroid])
 
   const assets = releases.find((r) => r.tag_name === version)?.assets
   const assetsO = releasesO[0]?.assets

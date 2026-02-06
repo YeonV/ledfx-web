@@ -4,9 +4,9 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { useEffect, useMemo, useState } from 'react'
 import TopBar from './components/TopBar'
 import Tabs from './components/Tabs'
-import Alert from './components/Alert'
+// import Alert from './components/Alert'
 import { Box, Typography } from '@mui/material'
-import Additionals from './components/Additional'
+// import Additionals from './components/Additional'
 import Footer from './components/Footer'
 import Links from './components/Links'
 import { getMobileOperatingSystem } from './components/utils'
@@ -92,8 +92,8 @@ function App() {
         {!isIOS && (
           <>
             <Tabs releasesO={releasesO} releases={releases} version={version} setVersion={setVersion} setMirror={setMirror} />
-            <Alert />
-            <Additionals />
+            {/* <Alert />
+            <Additionals /> */}
           </>
         )}
         {isIOS && (
