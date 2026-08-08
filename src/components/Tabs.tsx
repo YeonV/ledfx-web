@@ -50,10 +50,13 @@ export default function Tabs({
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between'}}>
         <MuiTabs value={value} onChange={handleChange} aria-label='basic tabs example'>
-          <Tab wrapped label='LedFx Core (official)' {...a11yProps(0)} />
-          <Tab wrapped label='LedFx Core (beta)' {...a11yProps(1)} />
-          <Tab wrapped label='LedFx Client (beta)' {...a11yProps(2)} />
-          <Tab wrapped label='LedFx CC (beta)' {...a11yProps(3)} />
+          {/* Explicit values, not positions: MuiTabs numbers its children by
+              index, so hiding a tab would silently renumber every tab after it
+              and break the `value === n` checks below. Restoring the Client tab
+              is putting its line back. */}
+          <Tab wrapped value={0} label='LedFx Core (official)' {...a11yProps(0)} />
+          <Tab wrapped value={1} label='LedFx Core (beta)' {...a11yProps(1)} />
+          <Tab wrapped value={3} label='LedFx CC (beta)' {...a11yProps(3)} />
         </MuiTabs>
         {!isAndroid && <Autocomplete
           id='grouped-demo'
