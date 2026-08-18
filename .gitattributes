@@ -1,0 +1,22 @@
+# Line endings are normalised to LF *in the repository*, while the working tree
+# keeps each platform's native endings. That is already what this repo contains
+# (the index is LF), so adding this changes no committed content — it just stops
+# the behaviour depending on whoever clones it having core.autocrlf set right,
+# which is what the "CRLF will be replaced by LF" warnings were about.
+* text=auto
+
+# Binary assets: never convert line endings, never diff as text.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.webp  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.pdf   binary
+
+# Generated lockfile — keep it out of diffs and out of language stats.
+yarn.lock  -diff  linguist-generated
