@@ -8,6 +8,7 @@ import { Search } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import { getMobileOperatingSystem } from './utils'
 import { extractFireTVCode } from './releaseUtils'
+import Extras from './Extras'
 
 function a11yProps(index: number) {
   return {
@@ -44,6 +45,11 @@ export default function Tabs({
   const assets = releases.find((r) => r.tag_name === version)?.assets
   const assetsO = releasesO[0]?.assets
 
+  // Switching tabs briefly parks `version` on an official tag that has no match
+  // in the beta list, which would leave Extras empty for a frame — fall back to
+  // the newest beta release so the tab never renders blank.
+  const extraAssets = assets ?? releases[0]?.assets
+
   const fireTVCode = extractFireTVCode(releases[0]?.body)
   
   return (
@@ -57,6 +63,7 @@ export default function Tabs({
           <Tab wrapped value={0} label='LedFx Core (official)' {...a11yProps(0)} />
           <Tab wrapped value={1} label='LedFx Core (beta)' {...a11yProps(1)} />
           <Tab wrapped value={3} label='LedFx CC (beta)' {...a11yProps(3)} />
+          <Tab wrapped value={4} label='Extras (beta)' {...a11yProps(4)} />
         </MuiTabs>
         {!isAndroid && <Autocomplete
           id='grouped-demo'
@@ -98,14 +105,17 @@ export default function Tabs({
       <Typography variant='h6' sx={{ marginTop: 2, marginBottom: 2, textAlign: 'center' }}>
         LedFx {value !== 0 ? releases[0]?.tag_name : releasesO[0]?.tag_name}
       </Typography>
-      {assets && assetsO && (
-        <OS
-          assets={value === 0 ? assetsO : assets}
-          variant={value === 1 ? 'core' : value === 2 ? 'client' : value === 3 ? 'CC' : undefined}
-          official={value === 0}
-          fireTVCode={fireTVCode}
-        />
-      )}
+      {value === 4
+        ? extraAssets && <Extras assets={extraAssets} />
+        : assets &&
+          assetsO && (
+            <OS
+              assets={value === 0 ? assetsO : assets}
+              variant={value === 1 ? 'core' : value === 2 ? 'client' : value === 3 ? 'CC' : undefined}
+              official={value === 0}
+              fireTVCode={fireTVCode}
+            />
+          )}
     </Box>
   )
 }
