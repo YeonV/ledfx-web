@@ -36,7 +36,11 @@ export default function Tabs({
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
     // newValue === 0 ? setMirror('Official') : setMirror('Unofficial')
-    newValue === 0 ? setVersion(releases[0].tag_name) : setVersion(releasesO[0].tag_name)
+    // `assets` below is always a lookup in the beta list, so `version` has to
+    // stay a beta tag on every tab — the official tab renders `assetsO` and
+    // never reads it. Parking an official tag here left `assets` undefined,
+    // which short-circuits the render guard and blanks the tab.
+    setVersion(releases[0]?.tag_name ?? '')
   }
   useEffect(() => {
     isAndroid && setValue(3)
