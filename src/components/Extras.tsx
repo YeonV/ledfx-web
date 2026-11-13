@@ -91,6 +91,13 @@ const groups: {
     match: (n) => n.includes('root-audio-module')
   },
   {
+    id: 'nowplaying-addon',
+    label: 'Now Playing Addon',
+    description:
+      'Now Playing for the Android app. Install via adb, or: pause Play Protect, install, then App info › ⋮ › Allow restricted settings, and grant notification access.',
+    match: (n) => n.includes('nowplaying_addon')
+  },
+  {
     id: 'debug-apk',
     label: (n) => (arch(n) ? `Debug APK · ${arch(n)}` : 'Debug APK'),
     description:

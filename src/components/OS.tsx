@@ -50,6 +50,9 @@ export default function OS({
             <Alert variant='outlined' severity='info' sx={{ width: '180px' }}>
                The Android app is <strong>in Alpha</strong>
             </Alert>
+            <Alert variant='outlined' severity='info' sx={{ width: '180px' }}>
+               Now Playing needs the <strong>Now Playing Addon</strong>, rooted devices the <strong>Root Audio Module</strong> (both under Extras).
+            </Alert>
             <Divider sx={{ pt: 0, pb: 4, width: '100%' }} />
         </Stack>
       </Grid>}
