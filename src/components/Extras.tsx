@@ -88,7 +88,7 @@ const groups: {
     id: 'root-audio-module',
     label: 'Root Audio Module',
     description: 'Magisk module for rooted devices: latency-free internal audio capture for the LedFx app.',
-    match: (n) => n.includes('root-audio-module')
+    match: (n) => /root-(audio-)?module/.test(n)
   },
   {
     id: 'nowplaying-addon',
