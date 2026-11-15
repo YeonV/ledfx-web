@@ -87,14 +87,15 @@ const groups: {
   {
     id: 'root-audio-module',
     label: 'Root Audio Module',
-    description: 'Magisk module for rooted devices: latency-free internal audio capture for the LedFx app.',
+    description:
+      'Magisk / KernelSU module for rooted devices: latency-free internal audio capture. Flash it and reboot — it installs or updates the LedFx app and the Now Playing Addon and grants every permission.',
     match: (n) => /root-(audio-)?module/.test(n)
   },
   {
     id: 'nowplaying-addon',
     label: 'Now Playing Addon',
     description:
-      'Now Playing for the Android app. Install via adb, or: pause Play Protect, install, then App info › ⋮ › Allow restricted settings, and grant notification access.',
+      'Now Playing for the Android app. Install via adb, or: pause Play Protect, install, then App info › ⋮ › Allow restricted settings, and grant notification access. Rooted? The Root Audio Module installs and enables it for you.',
     match: (n) => n.includes('nowplaying_addon')
   },
   {
